@@ -7,7 +7,7 @@ open class Matrix<T>(val rowLength: Int, val columnLength: Int, val initFn: (Pos
     }
 
     @Suppress("UNCHECKED_CAST")
-    private val data = Array(rowLength) { row ->
+    val data = Array(rowLength) { row ->
         Array<Any?>(columnLength) { column ->
             val position = Position(row, column)
             initFn(position)
@@ -21,26 +21,24 @@ open class Matrix<T>(val rowLength: Int, val columnLength: Int, val initFn: (Pos
 
     open operator fun get(position: Position): T {
         checkPosition(position)
-        return data[rowLength][columnLength]
+        return data[position.row][position.column]
     }
 
     open operator fun set(position: Position, value: T) {
         checkPosition(position)
-        data[rowLength][columnLength] = value
+        data[position.row][position.column] = value
     }
 
-    fun row(rowIndex: Int): Array<T> {
+    fun row(rowIndex: Int): List<T> {
         if(rowIndex >= rowLength || rowIndex < 0) throw IndexOutOfBoundsException("rowIndex must be in range 0..${rowLength - 1}, but is $rowIndex")
-        return data[rowIndex].clone()
+        return data[rowIndex].map { it }
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun column(columnIndex: Int): Array<T> {
+    fun column(columnIndex: Int): List<T> {
         if(columnIndex >= rowLength || columnIndex < 0)
             throw IndexOutOfBoundsException("columnIndex must be in range 0..${columnLength - 1}, but is $columnIndex")
-        return Array<Any?>(rowLength) { row ->
-            data[row][columnIndex]
-        } as Array<T>
+        return data.map { it[columnIndex] }
     }
 
     override fun toString() = data.joinToString(separator = "\n") { row ->

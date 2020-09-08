@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class PositionTest {
     @Test
     fun `Position is constructed correctly`() {
-        assertThat(Position(1, 2)).isNotNull()
+        assertThat(Position(1, 2)).isNotNull
     }
 
     @Test
