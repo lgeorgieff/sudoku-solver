@@ -14,7 +14,7 @@ class Board : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { -1 }) {
     fun isSet(position: Position) = this[position] != -1
 
     override fun set(position: Position, value: Int) {
-        if(isValidValue(value)) throw IllegalArgumentException(""""value" must be in the range 1..9, but is $value""")
+        if(!isValidValue(value)) throw IllegalArgumentException(""""value" must be in the range 1..9, but is $value""")
         super.set(position, value)
     }
 }
