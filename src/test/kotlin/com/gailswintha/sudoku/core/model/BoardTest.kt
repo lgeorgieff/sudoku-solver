@@ -47,4 +47,14 @@ class BoardTest {
     fun `set value throws IllegalArgumentException in case value is too large`() {
         assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy { Board()[Position(0, 0)] = 10 }
     }
+
+    @Test
+    fun `unset value sets correct value`() {
+        val board = Board()
+        val position = Position(4, 3)
+        board[position] = 1
+        assertThat(board.isSet(position)).isTrue
+        board.unset(position)
+        assertThat(board.isSet(position)).isFalse
+    }
 }

@@ -3,7 +3,7 @@ package com.gailswintha.sudoku.sudokusolver
 import com.gailswintha.sudoku.core.model.Board
 
 fun main() {
-    val table = Board()
+    val table = Board() // Board.loadFromJsonFile(File("/home/lukas/Development/github/sudoku-solver/board.json"))
     println(table)
 
     println()
