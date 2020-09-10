@@ -57,4 +57,162 @@ class BoardTest {
         board.unset(position)
         assertThat(board.isSet(position)).isFalse
     }
+
+    @Test
+    fun `getAllSectionPositionsFor() throws InvalidPosition in case of row index is equal to rowLength`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Board().getAllSectionPositionsFor(Position(Board.ROW_LENGTH, 0)) }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() throws InvalidPosition in case of row index is greater than to rowLength`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Board().getAllSectionPositionsFor(Position(Board.ROW_LENGTH + 1, 0)) }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() throws InvalidPosition in case of column index is equal to columnLength`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Board().getAllSectionPositionsFor(Position(0, Board.COLUMN_LENGTH)) }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() throws InvalidPosition in case of column index is greater than to columnLength`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Board().getAllSectionPositionsFor(Position(0, Board.COLUMN_LENGTH + 1)) }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 1x1`() {
+        val positions = setOf(
+            Position(0, 0), Position(0, 1), Position(0, 2),
+            Position(1, 0), Position(1, 1), Position(1, 2),
+            Position(2, 0), Position(2, 1), Position(2, 2)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 1x2`() {
+        val positions = setOf(
+            Position(0, 3), Position(0, 4), Position(0, 5),
+            Position(1, 3), Position(1, 4), Position(1, 5),
+            Position(2, 3), Position(2, 4), Position(2, 5)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 1x3`() {
+        val positions = setOf(
+            Position(0, 6), Position(0, 7), Position(0, 8),
+            Position(1, 6), Position(1, 7), Position(1, 8),
+            Position(2, 6), Position(2, 7), Position(2, 8)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 2x1`() {
+        val positions = setOf(
+            Position(3, 0), Position(3, 1), Position(3, 2),
+            Position(4, 0), Position(4, 1), Position(4, 2),
+            Position(5, 0), Position(5, 1), Position(5, 2)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 2x2`() {
+        val positions = setOf(
+            Position(3, 3), Position(3, 4), Position(3, 5),
+            Position(4, 3), Position(4, 4), Position(4, 5),
+            Position(5, 3), Position(5, 4), Position(5, 5)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 2x3`() {
+        val positions = setOf(
+            Position(3, 6), Position(3, 7), Position(3, 8),
+            Position(4, 6), Position(4, 7), Position(4, 8),
+            Position(5, 6), Position(5, 7), Position(5, 8)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 3x1`() {
+        val positions = setOf(
+            Position(6, 0), Position(6, 1), Position(6, 2),
+            Position(7, 0), Position(7, 1), Position(7, 2),
+            Position(8, 0), Position(8, 1), Position(8, 2)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 3x2`() {
+        val positions = setOf(
+            Position(6, 3), Position(6, 4), Position(6, 5),
+            Position(7, 3), Position(7, 4), Position(7, 5),
+            Position(8, 3), Position(8, 4), Position(8, 5)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `getAllSectionPositionsFor() returns valid positions for section 3x3`() {
+        val positions = setOf(
+            Position(6, 6), Position(6, 7), Position(6, 8),
+            Position(7, 6), Position(7, 7), Position(7, 8),
+            Position(8, 6), Position(8, 7), Position(8, 8)
+        )
+
+        positions.forEach { position ->
+            assertThat(Board().getAllSectionPositionsFor(position).toSet()).isEqualTo(positions)
+        }
+    }
+
+    @Test
+    fun `section() throws InvalidPosition in case of column index is equal to columnLength`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Board().section(Position(0, Board.COLUMN_LENGTH)) }
+    }
+
+    @Test
+    fun `section() throws InvalidPosition in case of column index is greater than to columnLength`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Board().section(Position(0, Board.COLUMN_LENGTH + 1)) }
+    }
+
+    @Test
+    fun `section() returns valid values`() {
+        val board = Board()
+        (0..2).forEach { rowIndex ->
+            (0..2).forEach { columnIndex ->
+                board[Position(rowIndex, columnIndex)] = rowIndex * 3 + columnIndex + 1
+            }
+        }
+        assertThat(board.section(Position(0, 0)).toSet()).isEqualTo((1..9).toSet())
+    }
 }

@@ -14,7 +14,7 @@ open class Matrix<T>(val rowLength: Int, val columnLength: Int, val initFn: (Pos
         }
     } as Array<Array<T>>
 
-    private fun checkPosition(position: Position) {
+    protected fun checkPosition(position: Position) {
         if(position.row >= rowLength) throw InvalidPosition(position, rowLength, columnLength)
         if(position.column >= columnLength) throw InvalidPosition(position, rowLength, columnLength)
     }

@@ -1,6 +1,6 @@
 package com.gailswintha.sudoku.core.model
 
-class Possibilities : Matrix<Set<Int>>(ROW_LENGTH, COLUMN_LENGTH, { mutableSetOf() }) {
+class Possibilities : Matrix<Set<Int>>(Board.ROW_LENGTH, Board.COLUMN_LENGTH, { mutableSetOf() }) {
     override fun set(position: Position, value: Set<Int>) {
         val invalidValues = value.filterInvalid()
         if(invalidValues.isNotEmpty())
