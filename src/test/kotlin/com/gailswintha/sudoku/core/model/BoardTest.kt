@@ -1,10 +1,31 @@
 package com.gailswintha.sudoku.core.model
 
+import com.gailswintha.sudoku.core.io.loadFromArray
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class BoardTest {
+    private lateinit var validBoard: Board
+
+    @BeforeEach
+    fun setUp() {
+        validBoard = Board.loadFromArray(
+            arrayOf(
+                arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+                arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+                arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+                arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
+                arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+                arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+                arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+                arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+                arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
+            )
+        )
+    }
+
     @Test
     fun `Board is constructed successfully`() {
         assertThat(Board()).isNotNull
@@ -214,5 +235,84 @@ class BoardTest {
             }
         }
         assertThat(board.section(Position(0, 0)).toSet()).isEqualTo((1..9).toSet())
+    }
+
+    @Test
+    fun `sectionCenters returns correct list of positions`() {
+        assertThat(Board.SECTION_CENTERS.toSet()).isEqualTo(setOf(
+            Position(1, 1), Position(1, 4), Position(1, 7),
+            Position(4, 1), Position(4, 4), Position(4, 7),
+            Position(7, 1), Position(7, 4), Position(7, 7)
+        ))
+    }
+
+    @Test
+    fun `isRowValid() returns true for valid rows`() {
+        assertThat(validBoard.isRowValid(0)).isTrue
+    }
+
+    @Test
+    fun `isRowValid() returns false for rows containing empty values`() {
+        validBoard.unset(Position(0, 3))
+        assertThat(validBoard.isRowValid(0)).isFalse
+    }
+
+    @Test
+    fun `isRowValid() returns false for rows containing duplicate values`() {
+        validBoard[Position(0, 2)] = validBoard[Position(0, 5)]
+        assertThat(validBoard.isRowValid(0)).isFalse
+    }
+
+    @Test
+    fun `isColumnValid() returns true for valid columns`() {
+        assertThat(validBoard.isColumnValid(4)).isTrue
+    }
+
+    @Test
+    fun `isColumnValid() returns false for columns containing empty values`() {
+        validBoard.unset(Position(3, 4))
+        assertThat(validBoard.isColumnValid(4)).isFalse
+    }
+
+    @Test
+    fun `isColumnValid() returns false for columns containing duplicate values`() {
+        validBoard[Position(3, 4)] = validBoard[Position(7, 4)]
+        assertThat(validBoard.isColumnValid(4)).isFalse
+    }
+
+    @Test
+    fun `isSectionValid() returns true for valid sections`() {
+        assertThat(validBoard.isSectionValid(Board.SECTION_CENTERS.random())).isTrue
+    }
+
+    @Test
+    fun `isSectionValid() returns false for sections containing empty values`() {
+        val sectionCenter = Board.SECTION_CENTERS.random()
+        validBoard.unset(sectionCenter)
+        assertThat(validBoard.isSectionValid(sectionCenter)).isFalse
+    }
+
+    @Test
+    fun `isSectionValid() returns false for sections containing duplicate values`() {
+        val sectionCenter = Board.SECTION_CENTERS.random()
+        validBoard[sectionCenter.previousRow] = validBoard[sectionCenter.nextRow]
+        assertThat(validBoard.isSectionValid(sectionCenter)).isFalse
+    }
+
+    @Test
+    fun `isValid() returns true for valid board`() {
+        assertThat(validBoard.isValid()).isTrue
+    }
+
+    @Test
+    fun `isValid() returns false for board including empty values`() {
+        validBoard.unset(Position(4, 5))
+        assertThat(validBoard.isValid()).isFalse
+    }
+
+    @Test
+    fun `isValid() returns false for invalid boards`() {
+        validBoard[Position(3, 7)] = validBoard[Position(1, 1)]
+        assertThat(validBoard.isValid()).isFalse
     }
 }

@@ -14,18 +14,18 @@ open class Matrix<T>(val rowLength: Int, val columnLength: Int, val initFn: (Pos
         }
     } as Array<Array<T>>
 
-    protected fun checkPosition(position: Position) {
+    protected fun assertPosition(position: Position) {
         if(position.row >= rowLength) throw InvalidPosition(position, rowLength, columnLength)
         if(position.column >= columnLength) throw InvalidPosition(position, rowLength, columnLength)
     }
 
     open operator fun get(position: Position): T {
-        checkPosition(position)
+        assertPosition(position)
         return data[position.row][position.column]
     }
 
     open operator fun set(position: Position, value: T) {
-        checkPosition(position)
+        assertPosition(position)
         data[position.row][position.column] = value
     }
 

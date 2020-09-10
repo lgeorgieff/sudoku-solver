@@ -84,4 +84,147 @@ class BoardTest {
             assertThatExceptionOfType(IllegalJson::class.java).isThrownBy { Board.loadFromJsonFile(jsonReader) }
         }
     }
+
+    @Test
+    fun `loadFromArray() loads data successfully`() {
+        val data = arrayOf(
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
+            arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+            arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+            arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+            arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
+        )
+
+        assertThat(Board.loadFromArray(data).toString()).isEqualTo(
+            """
+                        1 2 3 4 5 6 7 8 9
+                        7 8 9 1 2 3 4 5 6
+                        4 5 6 7 8 9 1 2 3
+                        9 1 2 3 4 5 6 7 8
+                        6 7 8 9 1 2 3 4 5
+                        3 4 5 6 7 8 9 1 2
+                        2 3 4 5 6 7 8 9 1
+                        5 6 7 8 9 1 2 3 4
+                        8 9 1 2 3 4 5 6 7
+                    """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `loadFromArray() loads data including empty fields successfully`() {
+        val data = arrayOf(
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
+            arrayOf(6, 7, 8, 9, -1, 2, 3, 4, 5),
+            arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+            arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, -1, 4),
+            arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
+        )
+
+        assertThat(Board.loadFromArray(data).toString()).isEqualTo(
+            """
+                        1 2 3 4 5 6 7 8 9
+                        7 8 9 1 2 3 4 5 6
+                        4 5 6 7 8 9 1 2 3
+                        9 1 2 3 4 5 6 7 8
+                        6 7 8 9 -1 2 3 4 5
+                        3 4 5 6 7 8 9 1 2
+                        2 3 4 5 6 7 8 9 1
+                        5 6 7 8 9 1 2 -1 4
+                        8 9 1 2 3 4 5 6 7
+                    """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `loadFromArray() throws IllegalArgumentException in case a row is missing`() {
+        val data = arrayOf(
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
+            arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+            arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+            arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4)
+        )
+
+        assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy { Board.loadFromArray(data) }
+    }
+
+    @Test
+    fun `loadFromArray() throws IllegalArgumentException in case of too many rows`() {
+        val data = arrayOf(
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
+            arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+            arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+            arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+            arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7),
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
+        )
+
+        assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy { Board.loadFromArray(data) }
+    }
+
+    @Test
+    fun `loadFromArray() throws IllegalArgumentException in case a column is missing`() {
+        val data = arrayOf(
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            arrayOf(9, 1, 2, 3, 4, 5, 6, 7),
+            arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+            arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
+            arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+            arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
+        )
+
+        assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy { Board.loadFromArray(data) }
+    }
+
+    @Test
+    fun `loadFromArray() throws IllegalArgumentException in case of too may columns`() {
+        val data = arrayOf(
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
+            arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+            arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2, 9),
+            arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+            arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
+        )
+
+        assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy { Board.loadFromArray(data) }
+    }
+
+    @Test
+    fun `loadFromArray() throws IllegalArgumentException in case of invalid values`() {
+        val data = arrayOf(
+            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+            arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
+            arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
+            arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
+            arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
+            arrayOf(3, 4, 5, 6, 99, 8, 9, 1, 2),
+            arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
+            arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
+        )
+
+        assertThatExceptionOfType(IllegalArgumentException::class.java).isThrownBy { Board.loadFromArray(data) }
+    }
 }
