@@ -1,4 +1,4 @@
-package com.gailswintha.sudoku.sudokusolver
+package com.gailswintha.sudoku.solver
 
 import com.gailswintha.sudoku.core.model.Board
 

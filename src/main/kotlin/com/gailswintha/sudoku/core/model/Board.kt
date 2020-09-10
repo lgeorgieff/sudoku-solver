@@ -52,10 +52,20 @@ class Board : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
         !this.contains(-1) && this.size == SECTION_LENGTH
     }
 
-    fun isValid(): Boolean {
-        for(rowIndex in 1 until ROW_LENGTH) if(!this.isRowValid(rowIndex)) return false
-        for(columnIndex in 1 until COLUMN_LENGTH) if(!this.isColumnValid(columnIndex)) return false
-        for(sectionCenter in SECTION_CENTERS) if(!this.isSectionValid(sectionCenter)) return false
-        return true
-    }
+    val isValid: Boolean
+        get() {
+            for(rowIndex in 1 until ROW_LENGTH) if(!this.isRowValid(rowIndex)) return false
+            for(columnIndex in 1 until COLUMN_LENGTH) if(!this.isColumnValid(columnIndex)) return false
+            for(sectionCenter in SECTION_CENTERS) if(!this.isSectionValid(sectionCenter)) return false
+            return true
+        }
+
+    val isComplete: Boolean
+        get() {
+            return (0 until ROW_LENGTH).flatMap { rowIndex ->
+                (0 until COLUMN_LENGTH).map { columnIndex ->
+                    this[Position(rowIndex, columnIndex)] == NO_VALUE
+                }
+            }.all { !it }
+        }
 }

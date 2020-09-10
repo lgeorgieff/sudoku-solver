@@ -300,19 +300,30 @@ class BoardTest {
     }
 
     @Test
-    fun `isValid() returns true for valid board`() {
-        assertThat(validBoard.isValid()).isTrue
+    fun `isValid returns true for valid board`() {
+        assertThat(validBoard.isValid).isTrue
     }
 
     @Test
-    fun `isValid() returns false for board including empty values`() {
+    fun `isValid returns false for board including empty values`() {
         validBoard.unset(Position(4, 5))
-        assertThat(validBoard.isValid()).isFalse
+        assertThat(validBoard.isValid).isFalse
     }
 
     @Test
-    fun `isValid() returns false for invalid boards`() {
+    fun `isValid returns false for invalid boards`() {
         validBoard[Position(3, 7)] = validBoard[Position(1, 1)]
-        assertThat(validBoard.isValid()).isFalse
+        assertThat(validBoard.isValid).isFalse
+    }
+
+    @Test
+    fun `isComplete returns true in case no empty values are in the Board`() {
+        assertThat(validBoard.isComplete).isTrue
+    }
+
+    @Test
+    fun `isComplete returns false in case empty values are in the Board`() {
+        validBoard.unset(Position(5, 6))
+        assertThat(validBoard.isComplete).isFalse
     }
 }
