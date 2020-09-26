@@ -16,6 +16,10 @@ class Board() : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
         const val COLUMN_LENGTH = 9
         const val SECTION_LENGTH = 9
         const val NO_VALUE = -1
+        /**
+         * Alias for NO_VALUE.
+         */
+        const val X = NO_VALUE
         val VALUE_RANGE = 1..9
 
         val SECTION_CENTERS =

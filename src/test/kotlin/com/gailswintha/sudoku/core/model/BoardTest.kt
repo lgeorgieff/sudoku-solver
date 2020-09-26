@@ -2,6 +2,7 @@ package com.gailswintha.sudoku.core.model
 
 import com.gailswintha.sudoku.core.io.loadFromArray
 import com.gailswintha.sudoku.core.model.Board.Companion.next
+import com.gailswintha.sudoku.data.BOARD_1_COMPLETE
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.jupiter.api.BeforeEach
@@ -12,19 +13,7 @@ class BoardTest {
 
     @BeforeEach
     fun setUp() {
-        validBoard = Board.loadFromArray(
-            arrayOf(
-                arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
-                arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
-                arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
-                arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
-                arrayOf(6, 7, 8, 9, 1, 2, 3, 4, 5),
-                arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
-                arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
-                arrayOf(5, 6, 7, 8, 9, 1, 2, 3, 4),
-                arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
-            )
-        )
+        validBoard = Board.loadFromArray(BOARD_1_COMPLETE)
     }
 
     @Test
