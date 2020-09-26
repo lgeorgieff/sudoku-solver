@@ -1,6 +1,15 @@
 package com.gailswintha.sudoku.core.model
 
-class Board : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
+class Board() : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
+    constructor(source: Board) : this() {
+        for(rowIndex in 0 until source.rowLength) {
+            for (columnIndex in 0 until source.columnLength) {
+                val position = Position(rowIndex, columnIndex)
+                this[position] = source[position]
+            }
+        }
+    }
+
     companion object {
         fun isValidValue(value: Int) = value in VALUE_RANGE
         const val ROW_LENGTH = 9
@@ -15,6 +24,23 @@ class Board : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
                     Position(rowIndex, columnIndex)
                 }
             }
+        val SECTION_POSITIONS = (0 until ROW_LENGTH).flatMap { rowIndex ->
+            (0 until COLUMN_LENGTH).map {
+                columnIndex -> Position(rowIndex, columnIndex)
+            }
+        }.groupBy { (rowIndex, columnIndex) ->
+            Position((rowIndex / 3) * 3 + 1, (columnIndex / 3) * 3 + 1)
+        }
+
+        val FIRST_POSITION = Position(0, 0)
+        val LAST_POSITION = Position(ROW_LENGTH - 1, COLUMN_LENGTH - 1)
+
+        fun Position.next() = when {
+            row >= ROW_LENGTH || column >= COLUMN_LENGTH -> throw InvalidPosition(this, ROW_LENGTH, COLUMN_LENGTH)
+            this == Board.LAST_POSITION -> throw InvalidPosition(Position(row, column + 1), ROW_LENGTH, COLUMN_LENGTH)
+            column == COLUMN_LENGTH - 1 -> Position(row + 1, 0)
+            else -> Position(row, column + 1)
+        }
     }
 
     fun isSet(position: Position) = this[position] != NO_VALUE

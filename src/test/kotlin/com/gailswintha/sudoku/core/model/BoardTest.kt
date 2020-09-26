@@ -1,6 +1,7 @@
 package com.gailswintha.sudoku.core.model
 
 import com.gailswintha.sudoku.core.io.loadFromArray
+import com.gailswintha.sudoku.core.model.Board.Companion.next
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.jupiter.api.BeforeEach
@@ -325,5 +326,65 @@ class BoardTest {
     fun `isComplete returns false in case empty values are in the Board`() {
         validBoard.unset(Position(5, 6))
         assertThat(validBoard.isComplete).isFalse
+    }
+
+    @Test
+    fun `copy constructor creates correct copy`() {
+        val copiedBoard = Board(validBoard)
+        for(rowIndex in 0 until Board.ROW_LENGTH) {
+            for (columnIndex in 0 until Board.COLUMN_LENGTH) {
+                val position = Position(rowIndex, columnIndex)
+                assertThat(copiedBoard[position]).isEqualTo(validBoard[position])
+            }
+        }
+    }
+
+    @Test
+    fun `SECTION_POSITIONS contains all centers`() {
+        for(center in Board.SECTION_CENTERS) assertThat(Board.SECTION_POSITIONS[center]?.size).isEqualTo(9)
+    }
+
+    @Test
+    fun `SECTION_POSITIONS is correct for all centers`() {
+        for(center in Board.SECTION_CENTERS) {
+            val sectionPositions = Board.SECTION_POSITIONS[center] ?: emptyList()
+            for (rowIndex in (center.row - 1)..(center.row + 1))
+                for (columnIndex in (center.column - 1)..(center.column + 1))
+                    assertThat(sectionPositions).contains(Position(rowIndex, columnIndex))
+        }
+    }
+
+    @Test
+    fun `Position's next() works correctly within boundaries at the beginning of a row`() {
+        val position = Position(2, 0)
+        val next = position.next()
+        assertThat(next.row).isEqualTo((position.row))
+        assertThat(next.column).isEqualTo(position.column + 1)
+    }
+
+    @Test
+    fun `Position's next() works correctly within boundaries in the middle of a row`() {
+        val position = Position(2, 4)
+        val next = position.next()
+        assertThat(next.row).isEqualTo((position.row))
+        assertThat(next.column).isEqualTo(position.column + 1)
+    }
+
+    @Test
+    fun `Position's next() works correctly within boundaries at the end of a row`() {
+        val position = Position(2, Board.COLUMN_LENGTH - 1)
+        val next = position.next()
+        assertThat(next.row).isEqualTo((position.row + 1))
+        assertThat(next.column).isEqualTo(0)
+    }
+
+    @Test
+    fun `Position's next() throws InvalidPosition if initial position is out of bounds`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Position(3, Board.COLUMN_LENGTH).next() }
+    }
+
+    @Test
+    fun `Position's next() throws InvalidPosition if next position is out of bounds`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Position(Board.ROW_LENGTH - 1, Board.COLUMN_LENGTH - 1).next() }
     }
 }

@@ -2,8 +2,8 @@ package com.gailswintha.sudoku.core.model
 
 open class Matrix<T>(val rowLength: Int, val columnLength: Int, val initFn: (Position) -> T) {
     init {
-        if(rowLength <= 0) throw IllegalArgumentException(""""rowLength" must be > 0, but is "$rowLength".""")
-        if(columnLength <= 0) throw IllegalArgumentException(""""columnLength" must be > 0, but is "$columnLength".""")
+        if (rowLength <= 0) throw IllegalArgumentException(""""rowLength" must be > 0, but is "$rowLength".""")
+        if (columnLength <= 0) throw IllegalArgumentException(""""columnLength" must be > 0, but is "$columnLength".""")
     }
 
     @Suppress("UNCHECKED_CAST")
