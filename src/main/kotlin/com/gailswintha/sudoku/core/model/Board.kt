@@ -5,7 +5,7 @@ class Board() : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
         for(rowIndex in 0 until source.rowLength) {
             for (columnIndex in 0 until source.columnLength) {
                 val position = Position(rowIndex, columnIndex)
-                this[position] = source[position]
+                if(source.isSet(position)) this[position] = source[position]
             }
         }
     }
@@ -94,4 +94,17 @@ class Board() : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
                 }
             }.all { !it }
         }
+
+    override fun equals(other: Any?): Boolean {
+        if(other !is Board) return false
+
+        for(rowIndex in 0 until ROW_LENGTH) {
+            for(columnIndex in 0 until COLUMN_LENGTH) {
+                val position = Position(rowIndex, columnIndex)
+                if(this[position] != other[position]) return false
+            }
+        }
+
+        return true
+    }
 }

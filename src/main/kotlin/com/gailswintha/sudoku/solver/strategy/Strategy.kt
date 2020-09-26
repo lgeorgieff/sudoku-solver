@@ -4,4 +4,5 @@ import com.gailswintha.sudoku.core.model.Board
 
 interface Strategy {
     fun complete(board: Board): Board
+    val order: Int
 }
