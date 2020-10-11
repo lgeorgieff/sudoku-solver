@@ -41,10 +41,15 @@ class Board() : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
 
         fun Position.next() = when {
             row >= ROW_LENGTH || column >= COLUMN_LENGTH -> throw InvalidPosition(this, ROW_LENGTH, COLUMN_LENGTH)
-            this == Board.LAST_POSITION -> throw InvalidPosition(Position(row, column + 1), ROW_LENGTH, COLUMN_LENGTH)
+            this == LAST_POSITION -> throw InvalidPosition(Position(row, column + 1), ROW_LENGTH, COLUMN_LENGTH)
             column == COLUMN_LENGTH - 1 -> Position(row + 1, 0)
             else -> Position(row, column + 1)
         }
+
+        val Position.sectionCenter: Position get() = Position((row / 3) * 3 + 1, (column / 3) * 3 + 1)
+
+        val Position.rowPositions: List<Position> get() = (0 until COLUMN_LENGTH).map { Position(row, it) }
+        val Position.columnPositions: List<Position> get() = (0 until ROW_LENGTH).map { Position(it, column) }
     }
 
     fun isSet(position: Position) = this[position] != NO_VALUE
@@ -111,4 +116,6 @@ class Board() : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
 
         return true
     }
+
+    override fun toString() = super.toString().replace(X.toString(), "_")
 }

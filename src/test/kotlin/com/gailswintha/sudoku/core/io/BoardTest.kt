@@ -1,6 +1,7 @@
 package com.gailswintha.sudoku.core.io
 
 import com.gailswintha.sudoku.core.model.Board
+import com.gailswintha.sudoku.core.model.Board.Companion.X
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
 import org.junit.jupiter.api.Test
@@ -42,10 +43,10 @@ class BoardTest {
                         7 8 9 1 2 3 4 5 6
                         4 5 6 7 8 9 1 2 3
                         9 1 2 3 4 5 6 7 8
-                        6 7 8 9 -1 2 3 4 5
+                        6 7 8 9 _ 2 3 4 5
                         3 4 5 6 7 8 9 1 2
                         2 3 4 5 6 7 8 9 1
-                        5 6 7 8 9 1 2 -1 4
+                        5 6 7 8 9 1 2 _ 4
                         8 9 1 2 3 4 5 6 7
                     """.trimIndent()
             )
@@ -121,10 +122,10 @@ class BoardTest {
             arrayOf(7, 8, 9, 1, 2, 3, 4, 5, 6),
             arrayOf(4, 5, 6, 7, 8, 9, 1, 2, 3),
             arrayOf(9, 1, 2, 3, 4, 5, 6, 7, 8),
-            arrayOf(6, 7, 8, 9, -1, 2, 3, 4, 5),
+            arrayOf(6, 7, 8, 9, X, 2, 3, 4, 5),
             arrayOf(3, 4, 5, 6, 7, 8, 9, 1, 2),
             arrayOf(2, 3, 4, 5, 6, 7, 8, 9, 1),
-            arrayOf(5, 6, 7, 8, 9, 1, 2, -1, 4),
+            arrayOf(5, 6, 7, 8, 9, 1, 2, X, 4),
             arrayOf(8, 9, 1, 2, 3, 4, 5, 6, 7)
         )
 
@@ -134,10 +135,10 @@ class BoardTest {
                         7 8 9 1 2 3 4 5 6
                         4 5 6 7 8 9 1 2 3
                         9 1 2 3 4 5 6 7 8
-                        6 7 8 9 -1 2 3 4 5
+                        6 7 8 9 _ 2 3 4 5
                         3 4 5 6 7 8 9 1 2
                         2 3 4 5 6 7 8 9 1
-                        5 6 7 8 9 1 2 -1 4
+                        5 6 7 8 9 1 2 _ 4
                         8 9 1 2 3 4 5 6 7
                     """.trimIndent()
         )
