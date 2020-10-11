@@ -2,9 +2,11 @@ package com.gailswintha.sudoku.solver.strategy
 
 import com.gailswintha.sudoku.core.model.Board
 import com.gailswintha.sudoku.core.model.Board.Companion.COLUMN_LENGTH
+import com.gailswintha.sudoku.core.model.Board.Companion.FIRST
 import com.gailswintha.sudoku.core.model.Board.Companion.ROW_LENGTH
 import com.gailswintha.sudoku.core.model.Board.Companion.VALUE_RANGE
 import com.gailswintha.sudoku.core.model.Board.Companion.columnPositions
+import com.gailswintha.sudoku.core.model.Board.Companion.isLast
 import com.gailswintha.sudoku.core.model.Board.Companion.next
 import com.gailswintha.sudoku.core.model.Board.Companion.rowPositions
 import com.gailswintha.sudoku.core.model.Board.Companion.sectionCenter
@@ -13,14 +15,14 @@ import com.gailswintha.sudoku.core.model.Position
 class SimpleDeduction : Strategy {
     override val order = 0
 
-    override fun complete(board: Board): Board = complete(Board(board), Board.FIRST_POSITION)
+    override fun complete(board: Board): Board = complete(Board(board), Position.FIRST)
 
     private tailrec fun complete(board: Board, position: Position): Board = when {
         completeRowsWithOnlyOneMissingValue(board) ||
                 completeColumnsWithOnlyOneMissingValue(board) ||
                 completeSectionsWithOnlyOneMissingValue(board) ||
-                completeFieldIfPossible(board, position) -> complete(board, Board.FIRST_POSITION)
-        position == Board.LAST_POSITION -> board
+                completeFieldIfPossible(board, position) -> complete(board, Position.FIRST)
+        position.isLast -> board
         else -> complete(board, position.next())
     }
 

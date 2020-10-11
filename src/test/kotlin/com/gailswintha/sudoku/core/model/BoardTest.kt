@@ -1,7 +1,9 @@
 package com.gailswintha.sudoku.core.model
 
 import com.gailswintha.sudoku.core.io.loadFromArray
+import com.gailswintha.sudoku.core.model.Board.Companion.COLUMN_LENGTH
 import com.gailswintha.sudoku.core.model.Board.Companion.next
+import com.gailswintha.sudoku.core.model.Board.Companion.previous
 import com.gailswintha.sudoku.data.BOARD_1_COMPLETE
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatExceptionOfType
@@ -375,5 +377,41 @@ class BoardTest {
     @Test
     fun `Position's next() throws InvalidPosition if next position is out of bounds`() {
         assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Position(Board.ROW_LENGTH - 1, Board.COLUMN_LENGTH - 1).next() }
+    }
+
+
+
+    @Test
+    fun `Position's previous() works correctly within boundaries at the beginning of a row`() {
+        val position = Position(2, 0)
+        val next = position.previous()
+        assertThat(next.row).isEqualTo((position.row - 1))
+        assertThat(next.column).isEqualTo(COLUMN_LENGTH - 1)
+    }
+
+    @Test
+    fun `Position's previous() works correctly within boundaries in the middle of a row`() {
+        val position = Position(2, 4)
+        val next = position.previous()
+        assertThat(next.row).isEqualTo((position.row))
+        assertThat(next.column).isEqualTo(position.column - 1)
+    }
+
+    @Test
+    fun `Position's previous() works correctly within boundaries at the end of a row`() {
+        val position = Position(2, COLUMN_LENGTH - 1)
+        val next = position.previous()
+        assertThat(next.row).isEqualTo((position.row))
+        assertThat(next.column).isEqualTo(position.column - 1)
+    }
+
+    @Test
+    fun `Position's previous() throws InvalidPosition if initial position is out of bounds`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Position(3, COLUMN_LENGTH).previous() }
+    }
+
+    @Test
+    fun `Position's previous() throws InvalidPosition if previous position is out of bounds`() {
+        assertThatExceptionOfType(InvalidPosition::class.java).isThrownBy { Position(0, 0).previous() }
     }
 }

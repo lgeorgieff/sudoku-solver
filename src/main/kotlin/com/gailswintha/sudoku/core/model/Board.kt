@@ -36,14 +36,21 @@ class Board() : Matrix<Int>(ROW_LENGTH, COLUMN_LENGTH, { NO_VALUE }) {
             Position((rowIndex / 3) * 3 + 1, (columnIndex / 3) * 3 + 1)
         }
 
-        val FIRST_POSITION = Position(0, 0)
-        val LAST_POSITION = Position(ROW_LENGTH - 1, COLUMN_LENGTH - 1)
-
+        val Position.Companion.LAST get() = Position(ROW_LENGTH - 1, COLUMN_LENGTH - 1)
+        val Position.Companion.FIRST get() = Position(0, 0)
+        val Position.isLast get() = this == Position.LAST
+        val Position.isFirst get() = this == Position.FIRST
         fun Position.next() = when {
             row >= ROW_LENGTH || column >= COLUMN_LENGTH -> throw InvalidPosition(this, ROW_LENGTH, COLUMN_LENGTH)
-            this == LAST_POSITION -> throw InvalidPosition(Position(row, column + 1), ROW_LENGTH, COLUMN_LENGTH)
+            this == Position.LAST -> throw InvalidPosition(Position(row, column + 1), ROW_LENGTH, COLUMN_LENGTH)
             column == COLUMN_LENGTH - 1 -> Position(row + 1, 0)
             else -> Position(row, column + 1)
+        }
+        fun Position.previous() = when {
+            row >= ROW_LENGTH || column >= COLUMN_LENGTH -> throw InvalidPosition(this, ROW_LENGTH, COLUMN_LENGTH)
+            this == Position.FIRST -> throw InvalidPosition(row, column - 1, ROW_LENGTH, COLUMN_LENGTH)
+            column == 0 -> Position(row - 1, COLUMN_LENGTH - 1)
+            else -> Position(row, column - 1)
         }
 
         val Position.sectionCenter: Position get() = Position((row / 3) * 3 + 1, (column / 3) * 3 + 1)

@@ -6,6 +6,8 @@ data class Position(val row: Int, val column: Int) {
         if(column < 0) throw IllegalArgumentException(""""column" must be >= 0, but is "$column".""")
     }
 
+    companion object
+
     val nextRow get() = Position(row + 1, column)
     val nextColumn get() = Position(row, column + 1)
     val previousRow: Position
